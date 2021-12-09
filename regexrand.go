@@ -128,3 +128,50 @@ func GenerateMatch(b *strings.Builder, re *syntax.Regexp, moreLimit int) {
 		GenerateMatch(b, re.Sub[cryptoRandInt(len(re.Sub)-1)], moreLimit)
 	}
 }
+
+// GenerateString helper function to generate a match and return a string
+func GenerateString(b *strings.Builder, re *syntax.Regexp, moreLimit int) string {
+	GenerateMatch(b, re, moreLimit)
+	return b.ToString()
+}
+
+// GenerateStrings helper function to generate a set of matchs (matchCount) and return a string array
+// generated set may have duplicate values
+// for unique set, use GenerateUniqueStrings
+func GenerateStrings(b *strings.Builder, re *syntax.Regexp, moreLimit, matchCount int) []string {
+	result := make([]string,0)
+	i := 0
+	for i < matchCount {
+		GenerateMatch(b, re, moreLimit)
+		item := b.ToString()
+		result = append(result, item)
+	}
+	return result
+}
+
+// GenerateUniqueStrings helper function to generate a set of matchs (matchCount) and return a string array.
+// generated set will have unique values
+func GenerateUniqueStrings(b *strings.Builder, re *syntax.Regexp, moreLimit, matchCount int) []string {
+	
+	cache := make(map[string]int)
+	result := make([]string,0)
+	i, ii := 0,0
+	iMaxRun := 10000000 
+	for i < matchCount {
+		ii++
+		// if ii reached the maximum run, then break the loop and return the result.
+		// this is to avoid infint loop where the count of unique values cannot reach "matchCount"
+		if ii >= iMaxRun {
+			break
+		}
+		GenerateMatch(b, re, moreLimit)
+		item := b.ToString()
+		//check if item is in the result.
+		if _, ok := cache[item];!ok {
+		  result = append(result, item)		
+		  cache[item]=1
+		  i++
+		}
+	}
+	return result
+}
