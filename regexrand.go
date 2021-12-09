@@ -145,6 +145,7 @@ func GenerateStrings(b *strings.Builder, re *syntax.Regexp, moreLimit, matchCoun
 		GenerateMatch(b, re, moreLimit)
 		item := b.ToString()
 		result = append(result, item)
+		b.Reset()
 	}
 	return result
 }
@@ -164,8 +165,8 @@ func GenerateUniqueStrings(b *strings.Builder, re *syntax.Regexp, moreLimit, mat
 		if ii >= iMaxRun {
 			break
 		}
-		GenerateMatch(b, re, moreLimit)
-		item := b.ToString()
+		
+		item := GenerateString(b, re, moreLimit)
 		//check if item is in the result.
 		if _, ok := cache[item];!ok {
 		  result = append(result, item)		
