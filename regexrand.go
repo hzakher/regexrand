@@ -132,27 +132,28 @@ func GenerateMatch(b *strings.Builder, re *syntax.Regexp, moreLimit int) {
 // GenerateString helper function to generate a match and return a string
 func GenerateString(b *strings.Builder, re *syntax.Regexp, moreLimit int) string {
 	GenerateMatch(b, re, moreLimit)
-	return b.ToString()
+	item := b.ToString()
+	b.Reset()
+	return item
 }
 
-// GenerateStrings helper function to generate a set of matchs (matchCount) and return a string array
+// GenerateStrings helper function to generate a set of matchs (count) and return a string array
 // generated set may have duplicate values
 // for unique set, use GenerateUniqueStrings
-func GenerateStrings(b *strings.Builder, re *syntax.Regexp, moreLimit, matchCount int) []string {
+func GenerateStrings(b *strings.Builder, re *syntax.Regexp, moreLimit, count int) []string {
 	result := make([]string,0)
 	i := 0
 	for i < matchCount {
-		GenerateMatch(b, re, moreLimit)
-		item := b.ToString()
+		
+		item := GenerateString(b, re, moreLimit)
 		result = append(result, item)
-		b.Reset()
 	}
 	return result
 }
 
-// GenerateUniqueStrings helper function to generate a set of matchs (matchCount) and return a string array.
+// GenerateUniqueStrings helper function to generate a set of matchs (count) and return a string array.
 // generated set will have unique values
-func GenerateUniqueStrings(b *strings.Builder, re *syntax.Regexp, moreLimit, matchCount int) []string {
+func GenerateUniqueStrings(b *strings.Builder, re *syntax.Regexp, moreLimit, count int) []string {
 	
 	cache := make(map[string]int)
 	result := make([]string,0)
