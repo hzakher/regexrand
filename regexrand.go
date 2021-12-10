@@ -164,7 +164,8 @@ func GenerateUniqueStrings(re *syntax.Regexp, moreLimit, count int) []string {
 		// if ii reached the maximum run, then break the loop and return the result.
 		// this is to avoid infint loop where the count of unique values cannot reach "matchCount"
 		if ii >= iMaxRun {
-			break
+			// maximum run reached, return the items we already identified
+			return result
 		}
 		
 		item := GenerateString(re, moreLimit)
