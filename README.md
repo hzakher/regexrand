@@ -41,5 +41,20 @@ func main() {
 	var b strings.Builder
 	regexrand.GenerateMatch(&b, re, 10)
 	fmt.Println(b.String())
+	
+	// generate string
+	str := regexrand.GenerateString(&b, re, 10)
+	fmt.Println(str)
+	// generate array of strings (could be non-unique) of 100 items
+	strs := regexrand.GenerateStrings(&b, re, 10,100)
+	for i:= range strs {
+	fmt.Println(strs[i])
+	}
+	
+	// generate array of unique strings of 100 items
+	strs := regexrand.GenerateUniqueStrings(&b, re, 10,100)
+	for i:= range strs {
+	fmt.Println(strs[i])
+	}	
 }
 ```
